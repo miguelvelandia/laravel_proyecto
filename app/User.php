@@ -25,7 +25,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token','created_at','updated_at','email_verified_at',
     ];
 
     /**
@@ -35,10 +35,44 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        
     ];
+
+    public function image()
+    {
+        return $this->morphOne('App\Models\Image', 'imageable');
+    }
+   
 
     public function blogs()
     {
         return $this->hasMany('App\Models\Blog');
     }
+
+    public function setNameAttribute($value){
+
+       $this->attributes['name']=ucfirst($value);
+    }
+
+    public function getFullNameAttribute(){
+
+        return strtolower($this->name);  
+     }
+
+     public function getEmailNameAttribute(){
+
+        return "{$this->email} {$this->email_verified_at}";  
+     }
+     
+     public function  getListBlogAttribute(){
+         return $this->blogs;
+     }
+    
+
+     protected  $appends=[
+        'full_name',
+        'list_blog',
+        'email_name'
+    ];
+     
 }

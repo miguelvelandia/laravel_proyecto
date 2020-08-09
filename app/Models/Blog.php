@@ -18,7 +18,19 @@ class Blog extends Model
         return $this->belongsTo('App\user', 'user_id');
     }
 
+    public function detalle_blogs()
+    {
+        return $this->hasMany('App\Models\DetalleBlog');
+    }
 
+    public function image()
+    {
+        return $this->morphOne('App\Models\Image', 'imageable');
+    }
 
+    public function tags()
+    {
+        return $this->morphToMany('App\Models\Tag', 'taggable');
+    }
 
 }
